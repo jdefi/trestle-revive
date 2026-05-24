@@ -22,12 +22,15 @@ If you want to contribute, please refer to the [contributing guidelines](./CONTR
 - **Components**: Replaced custom component library with shadcn/ui-inspired components
 - **Data Fetching**: Switched from SWR to TanStack Query for server state management
 - **Environment Configuration**: Moved RPC configuration from .env to Wagmi config for better encapsulation
+- **Configuration Structure**: Organized config into src/config/ directory with web3 and contracts modules
 
 ### Dependency Updates:
 - **New Dependencies**:
   - `@tanstack/react-query` - For server state management
   - `@rainbow-me/rainbowkit` - For wallet connection UI
   - `wagmi` - For Ethereum blockchain interaction hooks
+  - `viem` - For Ethereum utilities
+  - `@web3modal/wagmi` - For Web3Modal integration
   - `next` - Latest version with App Router
   - `tailwindcss` - For utility-first styling
   - `headlessui` - For accessible UI components
@@ -41,8 +44,13 @@ If you want to contribute, please refer to the [contributing guidelines](./CONTR
   - Legacy styling libraries
   - Old state management solutions
 
+### Configuration Structure:
+- `src/config/web3/index.ts` - Web3/Wagmi configuration with RPC fallbacks and connectors
+- `src/config/contracts.ts` - Contract addresses from environment variables
+- `.env` - Environment variables (using NEXT_PUBLIC_ prefix for Next.js)
+
 ### Environment Details:
-- **Migration Time**: 2026-05-24T11:06:17+03:00
+- **Migration Time**: 2026-05-24T12:40:13+03:00
 - **Active Development File**: `src/components/WalletProviderModal/components/WalletCard.tsx` (reference)
 - **Current Branch**: `main`
 - **Deployment Target**: Netlify (via `netlify.toml`)
@@ -71,18 +79,19 @@ If you want to contribute, please refer to the [contributing guidelines](./CONTR
 
 ## Configuration
 
-Environment variables are stored in `.env.local` (not committed):
+Environment variables are stored in `.env` (not committed):
 - `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`: WalletConnect project ID
 - Contract addresses for tokens and distributors
 
-Note: RPC endpoints are now configured directly in `src/lib/walletProvider.tsx` for better encapsulation.
+Note: RPC endpoints are now configured with fallback mechanisms in `src/config/web3/index.ts` for better reliability.
 
 ## Features
 
-- Wallet connection with multiple providers (MetaMask, WalletConnect, etc.)
+- Wallet connection with multiple providers (MetaMask, WalletConnect, Web3Modal auth, etc.)
 - Token claiming functionality (HopeNobt airdrop)
 - Staking and farming interfaces for BRT and HopeNobt tokens
 - Real-time blockchain data via Wagmi and TanStack Query
 - Responsive design with Tailwind CSS
 - Netlify-ready deployment configuration
+- RPC load balancing with multiple fallback providers
 

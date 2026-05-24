@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useAccount } from 'wagmi';
+import { useAccount, useBalance } from 'wagmi';
 import ConnectButton from '../lib/components/ConnectButton';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { address } = useAccount();
+  const { data: balance } = useBalance({ address });
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#609C41] to-[#346EB8] relative">
@@ -19,17 +20,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <span className="text-xl font-bold text-gray-900">BroilerPlus</span>
               </Link>
             </div>
-            <div className="flex items-center space-x-4">
-              {address ? (
-                <>
-                  <span className="text-sm text-gray-600 font-mono">
-                    {`${address.slice(0, 6)}...${address.slice(-4)}`}
-                  </span>
-                  <ConnectButton className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-colors" />
-                </>
-              ) : (
-                <ConnectButton className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-colors" />
-              )}
+            <div className="flex items-center">
+              <ConnectButton />
             </div>
           </div>
         </div>
@@ -47,7 +39,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <p className="text-xl text-gray-600 mb-8 max-w-md">
               Connect your wallet to access DeFi features and start earning rewards
             </p>
-            <ConnectButton className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-8 rounded-lg text-lg transition-colors" />
+            <ConnectButton />
           </div>
         </div>
       ) : (
@@ -56,13 +48,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
       )}
       
-      {/* Bottom-center wallet display */}
       {address && (
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 flex items-center space-x-2 bg-white bg-opacity-90 rounded-xl px-3 py-2 shadow-lg z-50 backdrop-blur-sm">
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white bg-opacity-90 rounded-xl px-4 py-2 shadow-lg z-50 backdrop-blur-sm">
           <Image src="/assets/img/brt.png" alt="Wallet" width={20} height={20} className="rounded-full" />
           <span className="text-sm font-mono text-gray-800">
             {`${address.slice(0, 6)}...${address.slice(-4)}`}
           </span>
+          {balance && (
+            <span className="text-sm text-gray-600 font-mono">
+              {Number(balance.formatted).toFixed(4)} {balance.symbol}
+            </span>
+          )}
         </div>
       )}
     </div>

@@ -1,4 +1,4 @@
-import '../globals.css';
+import './globals.css';
 import type { Metadata } from 'next';
 import { WalletProvider } from '../lib/walletProvider';
 import AppLayout from './client-layout';
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <WalletProvider>
           <AppLayout>{children}</AppLayout>

@@ -1,8 +1,8 @@
-import { ethers } from 'ethers';
+import { formatUnits } from 'ethers';
 
 export function formatBalance(balance: string | bigint, decimals = 18): string {
   if (typeof balance === 'bigint') {
     balance = balance.toString();
   }
-  return ethers.utils.formatUnits(balance, decimals);
+  return formatUnits(balance, decimals);
 }
